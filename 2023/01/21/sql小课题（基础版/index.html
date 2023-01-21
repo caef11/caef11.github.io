@@ -22,12 +22,12 @@
 <meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnppXF.png">
 <meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnk63R.png">
 <meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnkbvt.png">
-<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145807357.png">
-<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111142700424.png">
-<meta property="og:image" content="c:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145339785.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/21/pSGXp9J.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/21/pSGOzh4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/21/pSGOxNF.png">
 <meta property="og:image" content="https://s1.ax1x.com/2023/01/11/pSnVi7T.png">
 <meta property="article:published_time" content="2023-01-21T10:18:06.958Z">
-<meta property="article:modified_time" content="2023-01-11T07:09:28.937Z">
+<meta property="article:modified_time" content="2023-01-21T10:29:45.644Z">
 <meta property="article:author" content="caef11">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s1.ax1x.com/2023/01/11/pSnpP0J.png">
@@ -36,13 +36,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1674296384930">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1674297234291">
     
-    <link rel="stylesheet" href="/css/style.css?v=1674296384930">
+    <link rel="stylesheet" href="/css/style.css?v=1674297234291">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1674296384931">
+            <link rel="stylesheet" href="/custom.css?v=1674297234291">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -405,7 +405,7 @@
 <p>EXTRACTVALUE (XML_document, XPath_string);<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串)<br>concat:返回结果为连接参数产生的字符串。<br>原理和updatexml其实是相同的。都是~不符合xml语法</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> (extractvalue(<span class="number">1</span>,concat(<span class="string">&#x27;~&#x27;</span>,(<span class="keyword">select</span> <span class="keyword">user</span>()),<span class="string">&#x27;~&#x27;</span>)));</span><br></pre></td></tr></table></figure>
 
-<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145807357.png" alt="image-20230111145807357" data-caption="image-20230111145807357" loading="lazy">以下比较冷门</p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSGXp9J"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/21/pSGXp9J.png" alt="pSGXp9J.png" data-caption="pSGXp9J.png" loading="lazy"></a><br>以下比较冷门</p>
 </li>
 <li><p>geometrycollection（5.5&lt;mysql版本&lt;5.6）：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> geometrycollection((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
@@ -457,7 +457,7 @@
 <p>依次判断表中的字段名 –&gt; and if(ascii(substr((select column_name from information_schema.columns where table_name&#x3D;’表名’ and table_schema&#x3D;’库名’ limit 0,1),1,1))&#x3D;猜测字段名第一个字母的ASCII码,sleep(5),1)%23</p>
 <p>依次判断表中数据的长度 –&gt; and if((length((select 字段名 from 表名 limit 0,1)))&gt;猜测数据长度,sleep(5),1)%23</p>
 <p>依次判断表中数据 –&gt; and if(ascii(substr((select 字段名 from 表名 limit 0,1),1,1))&#x3D;x,sleep(5),1)%23</p>
-<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><h4 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h4><p>在sql语句中，分号为一个语句的结束，在一个语句结束后可以再继续添加语句，不同语句用分号隔开，造成堆叠注入。但是前提是存在注入漏洞，分号没有被过滤，没有禁止执行多条sql语句。其中mysqli_multi_query()这个函数就可以支持同时执行多条sql语句，而mysqli_query()函数一次只能执行一条语句。<img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111142700424.png" alt="image-20230111142700424" data-caption="image-20230111142700424" loading="lazy"></p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><h4 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h4><p>在sql语句中，分号为一个语句的结束，在一个语句结束后可以再继续添加语句，不同语句用分号隔开，造成堆叠注入。但是前提是存在注入漏洞，分号没有被过滤，没有禁止执行多条sql语句。其中mysqli_multi_query()这个函数就可以支持同时执行多条sql语句，而mysqli_query()函数一次只能执行一条语句。<br><a target="_blank" rel="noopener" href="https://imgse.com/i/pSGOzh4"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/21/pSGOzh4.png" alt="pSGOzh4.png" data-caption="pSGOzh4.png" loading="lazy"></a></p>
 <h4 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h4><p>二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。</p>
 <p>防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理的数据又被还原并存储在数据库中，当Web程序调用存储在数据库中的恶意数据并执行SQL查询时，就发生了SQL二次注入。</p>
 <p>通俗一点的解释：用户输入数据–&gt;被防御者进行处理–&gt;再将数据存储至数据库中–&gt;数据恢复成本来的面貌–&gt;再次执行操作调用数据库中数据时，发生二次注入。</p>
@@ -478,7 +478,7 @@
 <h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><p>需要无列名注入主要是因为column关键字被ban，无法获取列名，光针对于这个还是比较简单的，不知道列名就可以利用给联合查询出来的派生表起别名就可以直接查出数据，如果想查出列名就可以用join using。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select * from (select * from users a join users b)c#</span></span><br></pre></td></tr></table></figure>
 
-<p>然后就会报错出第一个字段<img onerror="imgOnError(this);" data-fancybox="gallery" src="C:\Users\15819\AppData\Roaming\Typora\typora-user-images\image-20230111145339785.png" alt="image-20230111145339785" data-caption="image-20230111145339785" loading="lazy">然后就会爆出第二个字段username</p>
+<p>然后就会报错出第一个字段<br><a target="_blank" rel="noopener" href="https://imgse.com/i/pSGOxNF"><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://s1.ax1x.com/2023/01/21/pSGOxNF.png" alt="pSGOxNF.png" data-caption="pSGOxNF.png" loading="lazy"></a><br>然后就会爆出第二个字段username</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select * from (select * from users a join users b using(id,username))c#</span></span><br></pre></td></tr></table></figure>
 
 <p>直到爆出所有字段。</p>
@@ -588,7 +588,7 @@
 
  
 
-<script async src="/js/app.js?v=1674296384966"></script>
+<script async src="/js/app.js?v=1674297234328"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
